@@ -6,19 +6,21 @@ const baseHTML = `
 `;
 
 function buildHTML(html, width, height) {
+    // fix protocol-less urls
+    html = html.replace(/([href|src])=(['"])\/\//g, '$1=$2https://');
     return baseHTML + `<div style="position:absolute;width:${width}px;height:${height}px;background:rgba(0,0,0,0.25)">` + html + '</div>';
 }
 function getDataURI(html) {
     return 'data:text/html;base64,' + new Buffer(html).toString('base64');
 }
 
-function screenshot(html, width, height, timeout) {
+function screenshot(html, width, height, timeout, debug) {
     const deferred = Q.defer();
     width = ~~width;
     height = ~~height;
     timeout = timeout || 250;
 
-    // console.log('screenshot', 'start', html, width, height, timeout);
+    debug && console.log('screenshot', 'start', html, width, height, timeout);
     CDP({
         host: 'localhost',
         port: 9222,
@@ -29,10 +31,10 @@ function screenshot(html, width, height, timeout) {
         Page.loadEventFired(captureScreenshot);
         Network.setCacheDisabled({ cacheDisabled: true });
         Network.requestWillBeSent(({ requestId, request }) => {
-            console.log('requestWillBeSent', requestId, request.url);
+            debug && console.log('requestWillBeSent', requestId, request.url);
         });
         // Runtime.consoleAPICalled(({type, args}) => {
-        //     console.log('consoleAPICalled', mtype);
+        //     debug && console.log('consoleAPICalled', mtype);
         // });
         Emulation.setDeviceMetricsOverride({
             width: width,
@@ -58,7 +60,7 @@ function screenshot(html, width, height, timeout) {
         // Navigates to data uri built from markup
         // @see https://github.com/ChromeDevTools/devtools-protocol/issues/13
         function navigate() {
-            // console.log('screenshot', 'navigate');
+            debug && console.log('screenshot', 'navigate');
             return Page.navigate({
                 url: getDataURI(buildHTML(html, width, height)),
             });
@@ -74,7 +76,7 @@ function screenshot(html, width, height, timeout) {
         // Resolves promise after screenshot
         function afterCapture({data}) {
             client.close(() => {
-                // console.log('screenshot end');
+                debug && console.log('screenshot end');
                 deferred.resolve(data);
             });
         }
@@ -83,11 +85,11 @@ function screenshot(html, width, height, timeout) {
         init()
         .then(navigate)
         .catch((err) => {
-            console.log(err);
+            debug && console.log(err);
             deferred.reject(err);
         });
     }).on('error', (err) => {
-        console.error(err);
+        debug && console.error(err);
         deferred.reject(err);
     });
     return deferred.promise;
