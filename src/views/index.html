@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML2IMG</title>
+</head>
+<body>
+    <form action="/image" method="GET" target="result">
+        <p><input type="text" name="timeout" placeholder="Timeout" value="300"></p>
+        <p><input type="text" name="width" placeholder="Width" value="728" onchange="resultFrm.style.width = ~~(this.value)+'px'"></p>
+        <p><input type="text" name="height" placeholder="Height" value="90" onchange="resultFrm.style.height = ~~(this.value)+'px'"></p>
+        <textarea name="html" cols="80" rows="10" placeholder="HTML Markup"><iframe id="c28be4ae02" name="c28be4ae02" src="http://us-ads.openx.net/w/1.0/afr?auid=538180883&cb=[timestamp]" frameborder="0" scrolling="no" width="728" height="90"><a href="http://us-ads.openx.net/w/1.0/rc?cs=c28be4ae02&cb=[timestamp]" ><img src="http://us-ads.openx.net/w/1.0/ai?auid=538180883&cs=c28be4ae02&cb=[timestamp]" border="0" alt=""></a></iframe></textarea>
+        <p><input type="submit"></p>
+    </form>
+    <iframe id="resultFrm" name="result" src="about:blank" frameborder="1" scrolling="no" width="728" height="90"></iframe>
+</body>
+</html>
