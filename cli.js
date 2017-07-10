@@ -11,7 +11,7 @@ const _default = {
     height: 400,
     delay: 500,
     filename: 'screenshot.png',
-    debug: false,
+    debug: process.env.DEBUG || false,
 };
 
 commander
@@ -44,6 +44,7 @@ function launchHeadlessChrome() {
 
 launchHeadlessChrome().then(chrome => {
     screenshot(html, width, height, delay, debug).then((data) => {
+        debug && console.log('Writing to:', __dirname + '/' + filename);
         fs.writeFile(__dirname + '/' + filename, new Buffer(data, 'base64'), () => {
             chrome.kill();
             process.exit();

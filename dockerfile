@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node:boron-slim
 ENV NODE_ENV production
 LABEL authors=ricardo@gumgum.com
 EXPOSE 3000
@@ -15,11 +15,11 @@ EXPOSE 3000
 #============================================
 USER root
 ARG CHROME_VERSION="google-chrome-stable"
-RUN apt-get -qqy --no-install-recommends install wget
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update -qqy \
-    && apt-get -qqy --no-install-recommends install ${CHROME_VERSION:-google-chrome-stable} \
+RUN apt-get update && apt-get install -qy  --no-install-recommends apt-transport-https ca-certificates gnupg
+RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get -qy update \
+    && apt-get -qy --no-install-recommends install ${CHROME_VERSION:-google-chrome-stable} \
     && rm /etc/apt/sources.list.d/google-chrome.list \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
