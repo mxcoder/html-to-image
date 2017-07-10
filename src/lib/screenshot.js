@@ -14,7 +14,7 @@ function getDataURI(html) {
     return 'data:text/html;base64,' + new Buffer(html).toString('base64');
 }
 
-function screenshot(html, width, height, timeout, debug) {
+function screenshot(html, width, height, timeout, port, debug) {
     const deferred = Q.defer();
     width = ~~width;
     height = ~~height;
@@ -23,7 +23,7 @@ function screenshot(html, width, height, timeout, debug) {
     debug && console.log('screenshot', 'start', html, width, height, timeout);
     CDP({
         host: 'localhost',
-        port: 9222,
+        port: port || 9222,
     }, (client) => {
         const { Runtime, Network, Emulation, Page } = client;
 

@@ -5,7 +5,7 @@
     <title>HTML2IMG</title>
 </head>
 <body>
-    <form action="/image" method="GET" target="result">
+    <form action="/image" method="POST" target="result">
         <p><label>Timeout: <input type="text" name="timeout" placeholder="Timeout" value="1000"></label></p>
         <p><label>Width: <input type="text" name="width" placeholder="Width" value="728" onchange="resultFrm.style.width = ~~(this.value)+'px'"></label></p>
         <p><label>Height: <input type="text" name="height" placeholder="Height" value="90" onchange="resultFrm.style.height = ~~(this.value)+'px'"></label></p>

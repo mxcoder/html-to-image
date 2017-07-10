@@ -35,10 +35,10 @@ app.get('/', (request, response) => {
     });
 });
 
-app.get('/image', (request, response) => {
-    const { html, width, height, timeout } = request.query;
+app.post('/image', (request, response) => {
+    const { html, width, height, timeout } = request.body;
     debug && console.log('Screenshot of image', width, height);
-    screenshot(html, width, height, timeout, debug)
+    screenshot(html, width, height, timeout, chromeport, debug)
         .then((data) => {
             const buffer = new Buffer(data, 'base64');
             response.type('png');
