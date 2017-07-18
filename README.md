@@ -1,6 +1,6 @@
 # HTML to Image Server
 ## WORK IN PROGRESS
-Renders any chunk of html using headless chrome.
+Renders to png any chunk of html using headless chrome.
 
 ## Dependencies
 * `node`
@@ -39,7 +39,7 @@ Now browse to http://localhost:3000/ for a half-baked UI (assuming LOCAL_PORT = 
 ### Endpoints
 
 * `GET /` -> renders the UI from (src/views/index.html)
-* `POST /image` -> receives a form-data with structure
+* `POST /image` -> receives a form-data with structure and returns image/png binary
     ```
     timeout: int
     width: int
